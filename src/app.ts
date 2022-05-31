@@ -192,94 +192,191 @@ function getProperty(book: Book, prop: BookProperties): any {
     return book[prop];
 }
 
+abstract class ReferenceItem {
+    // title: string;
+    // year: number;
+    // constructor(newTitle: string, newYear: number) {
+    //     console.log('Creating a new ReferenceItem...');
+    //     this.title = newTitle;
+    //     this.year = newYear;
+    // }
+
+    // @ts-ignore
+    private _publisher: string;
+
+    #id: number;
+
+    static department: string = 'Classical Literature';
+
+    get publisher(): string {
+        // eslint-disable-next-line no-underscore-dangle
+        return this._publisher.toUpperCase();
+    }
+
+    // @ts-ignore
+    set _publisher(newPublisher: string) {
+        // eslint-disable-next-line no-underscore-dangle
+        this._publisher = newPublisher;
+    }
+
+    constructor(id: number, public title: string, protected year: number) {
+        console.log('Creating a new ReferenceItem...');
+        this.#id = id;
+    }
+
+    getID(): number {
+        return this.#id;
+    }
+
+    abstract printCitation(): void;
+
+    printItem(): void {
+        console.log(`${this.title} was published in ${this.year}`);
+        console.log(`Department: ${ReferenceItem.department}`);
+        Object.getPrototypeOf(this).constructor.department;
+    }
+}
+
+class Encyclopedia extends ReferenceItem {
+    constructor(id: number, title: string, year: number, public edition: number) {
+        console.log('Creating a new Encyclopedia...');
+        super(id, title, year);
+    }
+    override printItem(): void {
+        super.printItem();
+        console.log(`Edition: ${this.edition} ${this.year}`);
+    }
+
+    printCitation(): void {
+        console.log(`${this.title} - ${this.year}`);
+    }
+}
+
+// interface A {
+//     name: string;
+//     a: number;
+// }
+
+class UniversityLibrarian implements Librarian  /* , A */ {
+    name: string;
+    email: string;
+    department: string;
+    a: number = 1;
+    assistCustomer(custName: string, bookTitle: string): void {
+        console.log(`${this.name} is assisting ${custName} with the book ${bookTitle}`);
+    }
+}
+
 // Task 02.01
-logFirstAvailable(getAllBooks());
-logBookTitles(getBookTitlesByCategory(Category.JavaScript));
-console.log(getBookAuthorByIndex(0));
-console.log(getBookAuthorByIndex(10));
-console.log(calcTotalPages());
+// logFirstAvailable(getAllBooks());
+// logBookTitles(getBookTitlesByCategory(Category.JavaScript));
+// console.log(getBookAuthorByIndex(0));
+// console.log(getBookAuthorByIndex(10));
+// console.log(calcTotalPages());
 
 // Task 03.01
-const myID: string = createCustomerID('Ann', 10);
-console.log(myID);
-let idGenerator: (name: string, id: number) => string;
-idGenerator = (name: string, id: number) => `${id} - ${name}`;
-idGenerator = createCustomerID;
-idGenerator('Ann', 10);
-let idGenerator2: typeof createCustomerID;
-let t = typeof createCustomerID;
+// const myID: string = createCustomerID('Ann', 10);
+// console.log(myID);
+// let idGenerator: (name: string, id: number) => string;
+// idGenerator = (name: string, id: number) => `${id} - ${name}`;
+// idGenerator = createCustomerID;
+// idGenerator('Ann', 10);
+// let idGenerator2: typeof createCustomerID;
+// let t = typeof createCustomerID;
 
 // Task 03.02
-createCustomer('Anna');
-createCustomer('Anna', 30);
-createCustomer('Anna', 30, 'Kyiv');
-console.log(getBookTitlesByCategory());
-logFirstAvailable();
-console.log(getBookById(1));
-const myBooks = checkoutBooks('Anna', 1, 2, 4);
-console.log(myBooks);
+// createCustomer('Anna');
+// createCustomer('Anna', 30);
+// createCustomer('Anna', 30, 'Kyiv');
+// console.log(getBookTitlesByCategory());
+// logFirstAvailable();
+// console.log(getBookById(1));
+// const myBooks = checkoutBooks('Anna', 1, 2, 4);
+// console.log(myBooks);
 
 // Task 03.03
-getTitles('Anna');
-getTitles(true);
-getTitles(1, true);
+// getTitles('Anna');
+// getTitles(true);
+// getTitles(1, true);
 
 // Task 03.04
-console.log(bookTitleTransform('TypeScript'));
-console.log(bookTitleTransform(100));
+// console.log(bookTitleTransform('TypeScript'));
+// console.log(bookTitleTransform(100));
 
 // Task 04.01
-const myBook: Book = {
-    id: 5,
-    title: 'Colors, Backgrounds, and Gradients',
-    author: 'Eric A. Meyer',
-    available: true,
-    category: Category.CSS,
-    pages: 200,
-    // year: 2015,
-    // copies: 3,
-    // markDamaged(reason: string) {
-    //     console.log(`Damaged: ${reason}`);
-    // },
-    markDamaged: (reason: string) => console.log(`Damaged: ${reason}`),
-};
+// const myBook: Book = {
+//     id: 5,
+//     title: 'Colors, Backgrounds, and Gradients',
+//     author: 'Eric A. Meyer',
+//     available: true,
+//     category: Category.CSS,
+//     pages: 200,
+//     // year: 2015,
+//     // copies: 3,
+//     // markDamaged(reason: string) {
+//     //     console.log(`Damaged: ${reason}`);
+//     // },
+//     markDamaged: (reason: string) => console.log(`Damaged: ${reason}`),
+// };
 
-printBook(myBook);
-myBook.markDamaged('missing back cover');
+// printBook(myBook);
+// myBook.markDamaged('missing back cover');
 
 // Task 04.02
-const logDamage: damagedLogger = (reason: string) => console.log(`Damaged: ${reason}`);
+// const logDamage: damagedLogger = (reason: string) => console.log(`Damaged: ${reason}`);
 
 // Task 04.03
-const favoriteAuthor: Author = {
-    name: 'Anna',
-    email: 'anna@gmail.com',
-    numBooksPublished: 3,
-};
+// const favoriteAuthor: Author = {
+//     name: 'Anna',
+//     email: 'anna@gmail.com',
+//     numBooksPublished: 3,
+// };
 
-const favoriteLibrarian: Librarian = {
-    name: 'Anna',
-    email: 'anna@gmail.com',
-    department: 'Classical Literature',
-    assistCustomer(custName: string, bookTitle: string): void {
-        console.log(`CustName: ${custName}, bookTitle: ${bookTitle}`);
-    },
-};
+// const favoriteLibrarian: Librarian = {
+//     name: 'Anna',
+//     email: 'anna@gmail.com',
+//     department: 'Classical Literature',
+//     assistCustomer(custName: string, bookTitle: string): void {
+//         console.log(`CustName: ${custName}, bookTitle: ${bookTitle}`);
+//     },
+// };
 
 // Task 04.04
-const offer: any = {
-    book: {
-        title: 'Essential TypeScript',
-        authors: [{ name: 'Anna' }],
-    },
-};
+// const offer: any = {
+//     book: {
+//         title: 'Essential TypeScript',
+//         authors: [{ name: 'Anna' }],
+//     },
+// };
 
-console.log(offer.magazine);
-console.log(offer.magazine?.getTitle());
-console.log(offer.book.getTitle?.());
-console.log(offer.book.authors?.[1]?.name);
+// console.log(offer.magazine);
+// console.log(offer.magazine?.getTitle());
+// console.log(offer.book.getTitle?.());
+// console.log(offer.book.authors?.[1]?.name);
 
 // Task 04.05
-console.log(getProperty(myBook, 'title'));
-console.log(getProperty(myBook, 'markDamaged'));
+// console.log(getProperty(myBook, 'title'));
+// console.log(getProperty(myBook, 'markDamaged'));
 // console.log(getProperty(myBook, 'isbn'));
+
+// Task 05.01
+// const ref: ReferenceItem = new ReferenceItem(1, 'Typescript', 2022);
+// ref.printItem();
+// console.log(ref);
+// // @ts-ignore
+// ref.publisher = 'abc print';
+// console.log(ref.publisher);
+// console.log(ref.getID());
+
+// Task 05.02
+// const refBook = new Encyclopedia(1, 'Typescript', 2022, 2);
+// refBook.printItem();
+// console.log(refBook);
+
+// Task 05.03
+// refBook.printCitation();
+
+// Task 05.04
+const favoriteLibrarian: Librarian /* | A */ = new UniversityLibrarian();
+favoriteLibrarian.name = 'Anna';
+favoriteLibrarian.assistCustomer('Boris', 'Learn TypeScript');
