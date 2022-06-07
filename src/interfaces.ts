@@ -44,4 +44,13 @@ interface A {
     a: number;
 }
 
-export { Book, DamagedLogger as Logger, Person, Author, Librarian, TOptions, A };
+interface Magazine {
+    title: string;
+    publisher: string;
+}
+
+interface ShelfItem {
+    title: string;
+}
+
+export { Book, DamagedLogger as Logger, Person, Author, Librarian, TOptions, A, Magazine, ShelfItem };

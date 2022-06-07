@@ -1,6 +1,8 @@
-import { ReferenceItem, UL, RefBook } from './classes';
-import { Librarian, Logger, A } from './interfaces';
-import { printRefBook } from './functions';
+import { ReferenceItem, UL, RefBook, Shelf } from './classes';
+import { Librarian, Logger, A, Book, Magazine } from './interfaces';
+import { getObjectProperty, printRefBook, purge } from './functions';
+import type { Library } from './classes/library';
+import { Category } from './enums';
 
 showHello('greeting', 'TypeScript');
 
@@ -147,3 +149,64 @@ function showHello(divName: string, name: string) {
 // printRefBook(refBook);
 // const favoriteLibrarian = new UL.UniversityLibrarian();
 // printRefBook(favoriteLibrarian);
+
+// Task 06.05
+// const flag = true;
+//
+// if (flag) {
+//     const obj = await import('./classes');
+//     const reader = new obj.Reader();
+//     reader.name = 'Anna';
+//     console.log(reader);
+// }
+//
+// if (flag) {
+//     import('./classes').then(obj => {
+//         const reader = new obj.Reader();
+//         reader.name = 'Anna';
+//         console.log(reader);
+//     });
+// }
+
+// Task 06.06
+// let lib: Library = {
+//     id: 1,
+//     address: 'unknown',
+//     name: 'Anna',
+// };
+
+// Task 07.01
+// const inventory: Book[] = [
+//     { id: 10, title: 'The C Programming Language', author: 'K & R', available: true, category: Category.Software },
+//     { id: 11, title: 'Code Complete', author: 'Steve McConnell', available: true, category: Category.Software },
+//     { id: 12, title: '8-Bit Graphics with Cobol', author: 'A. B.', available: true, category: Category.Software },
+//     { id: 13, title: 'Cool autoexec.bat Scripts!', author: 'C. D.', available: true, category: Category.Software },
+// ];
+
+// const books = purge<Book>(inventory);
+// console.log(books);
+// const result = purge([1, 2, 3, 4]);
+// console.log(result);
+
+// Task 07.02
+// const bookShelf = new Shelf<Book>();
+// inventory.forEach(book => bookShelf.add(book));
+// console.log(bookShelf.getFirst().title);
+
+const magazines: Magazine[] = [
+    { title: 'Programming Language Monthly', publisher: 'Code Mags' },
+    { title: 'Literary Fiction Quarterly', publisher: 'College Press' },
+    { title: 'Five Points', publisher: 'GSU' },
+];
+
+const magazineShelf = new Shelf<Magazine>();
+magazines.forEach(mag => magazineShelf.add(mag));
+console.log(magazineShelf.getFirst().title);
+
+// Task 07.03
+magazineShelf.printTitles();
+magazineShelf.find('Five Points');
+// new Shelf<id: number>();
+
+console.log(getObjectProperty(magazines[0], 'title')); // 'title' | 'publisher'
+// console.log(getObjectProperty(magazines[0], 'id'));

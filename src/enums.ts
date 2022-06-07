@@ -4,4 +4,5 @@ export enum Category {
     HTML,
     TypeScript,
     React,
+    Software
 }
