@@ -1,8 +1,9 @@
 import { ReferenceItem, UL, RefBook, Shelf } from './classes';
 import { Librarian, Logger, A, Book, Magazine } from './interfaces';
-import { getObjectProperty, printRefBook, purge } from './functions';
+import { createCustomer, getAllBooks, getObjectProperty, printRefBook, purge } from './functions';
 import type { Library } from './classes/library';
 import { Category } from './enums';
+import { BookRequiredFields, CreateCustomerFunctionType, UpdatedBook } from './types';
 
 showHello('greeting', 'TypeScript');
 
@@ -193,20 +194,73 @@ function showHello(divName: string, name: string) {
 // inventory.forEach(book => bookShelf.add(book));
 // console.log(bookShelf.getFirst().title);
 
-const magazines: Magazine[] = [
-    { title: 'Programming Language Monthly', publisher: 'Code Mags' },
-    { title: 'Literary Fiction Quarterly', publisher: 'College Press' },
-    { title: 'Five Points', publisher: 'GSU' },
-];
+// const magazines: Magazine[] = [
+//     { title: 'Programming Language Monthly', publisher: 'Code Mags' },
+//     { title: 'Literary Fiction Quarterly', publisher: 'College Press' },
+//     { title: 'Five Points', publisher: 'GSU' },
+// ];
 
-const magazineShelf = new Shelf<Magazine>();
-magazines.forEach(mag => magazineShelf.add(mag));
-console.log(magazineShelf.getFirst().title);
+// const magazineShelf = new Shelf<Magazine>();
+// magazines.forEach(mag => magazineShelf.add(mag));
+// console.log(magazineShelf.getFirst().title);
 
 // Task 07.03
-magazineShelf.printTitles();
-magazineShelf.find('Five Points');
+// magazineShelf.printTitles();
+// magazineShelf.find('Five Points');
 // new Shelf<id: number>();
 
-console.log(getObjectProperty(magazines[0], 'title')); // 'title' | 'publisher'
+// console.log(getObjectProperty(magazines[0], 'title')); // 'title' | 'publisher'
 // console.log(getObjectProperty(magazines[0], 'id'));
+
+// Task 07.04
+// const bookRequiredFields: BookRequiredFields = {
+//     author: 'Anna',
+//     available: true,
+//     category: Category.React,
+//     id: 1,
+//     markDamaged: null,
+//     pages: 200,
+//     title: 'Learn React',
+// };
+//
+// const updatedBook: UpdatedBook = {};
+//
+// const params: Parameters<CreateCustomerFunctionType> = ['Anna'];
+// createCustomer(...params);
+
+// Task 08.01
+// const u = new UL.UniversityLibrarian();
+// UL.UniversityLibrarian['a'] = 1;
+// u['m'] = function () {};
+// console.log(u);
+// const proto = Object.getPrototypeOf(u);
+// console.log(proto);
+// proto['m'] = function () {};
+
+// Task 08.02
+// const u = new UL.UniversityLibrarian();
+// console.log(u);
+// u.name = 'Anna';
+// u['printLibrarian']();
+// console.log(u.a);
+
+// Task 08.03
+// const u = new UL.UniversityLibrarian();
+// console.log(u);
+// u.assistFaculty = null;
+// u.teachCommunity = null;
+
+// Task 08.04
+// const refBook = new RefBook(1, 'Typescript', 2022, 2);
+// refBook.printItem();
+
+// Task 08.05, 08.06
+const u = new UL.UniversityLibrarian();
+u.name = 'Anna';
+u.assistCustomer('Boris', getAllBooks()[0].title);
+console.log(u);
+
+// Task 08.07
+const refBook = new RefBook(1, 'Typescript', 2022, 2);
+refBook.copies = 10;
+console.log(refBook);
