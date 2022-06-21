@@ -1,7 +1,7 @@
 /* eslint-disable no-redeclare */
 
 import { Category } from './enums';
-import { Book, TOptions } from './interfaces';
+import { Book, Callback, LibMrgCallback, TOptions } from './interfaces';
 import { BookOrUndefined, BookProperties } from './types';
 import RefBook from './classes/encyclopedia';
 
@@ -150,7 +150,10 @@ export function getProperty(book: Book, prop: BookProperties): any {
     return book[prop];
 }
 
-export function getObjectProperty<TObject, TKey extends keyof TObject>(obj: TObject, prop: TKey): TObject[TKey] | string {
+export function getObjectProperty<TObject, TKey extends keyof TObject>(
+    obj: TObject,
+    prop: TKey,
+): TObject[TKey] | string {
     const value = obj[prop];
     return typeof value === 'function' ? value.name : value;
 }
@@ -162,4 +165,54 @@ export function printRefBook(data: any): void {
 
 export function purge<T>(inventory: T[]): T[] {
     return inventory.slice(2);
+}
+
+export function getBookByCategory(category: Category, callback: Callback<string[]>): void {
+    // export function getBookByCategory(category: Category, callback: LibMrgCallback): void {
+    setTimeout(() => {
+        try {
+            const titles = getBookTitlesByCategory(category);
+            if (titles.length > 0) {
+                callback(null, titles);
+            } else {
+                throw new Error('No Books Found');
+            }
+        } catch (err) {
+            callback(err, null);
+        }
+    }, 2000);
+}
+
+export function logCategorySearch(err: Error, titles: string[]): void {
+    if (err) {
+        console.log(err.message);
+    } else {
+        console.log(titles);
+    }
+}
+
+export function getBooksByCategoryPromise(category: Category): Promise<string[]> {
+    const p: Promise<string[]> = new Promise<string[]>((resolve, reject) => {
+        setTimeout(() => {
+            const titles = getBookTitlesByCategory(category);
+            if (titles.length > 0) {
+                resolve(titles);
+            } else {
+                reject('No Books Found');
+            }
+        }, 2000);
+    });
+    return p;
+}
+
+export async function logSearchResult(category: Category) {
+    await Promise.all([]);
+    Promise.allSettled([]);
+    Promise.race([]);
+    Promise.any([]);
+
+    const result1: Awaited<Promise<string[]>> = await getBooksByCategoryPromise(category);
+    const result2: Awaited<Promise<string[]>> = await getBooksByCategoryPromise(category);
+    console.log(result1.length + result2.length);
+    // return result;
 }

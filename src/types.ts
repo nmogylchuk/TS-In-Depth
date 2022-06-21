@@ -1,5 +1,5 @@
 import { Author, Book, Person } from './interfaces';
-import { createCustomer } from './functions';
+import { createCustomer, getBooksByCategoryPromise } from './functions';
 import { Category } from './enums';
 
 // export type Book = {
@@ -64,3 +64,7 @@ type RemoveProps<T extends object, TProps extends keyof T> = {
 
 type BookRequiredPropsType = RemoveProps<Book, RequiredFields>;
 type BookOptionalPropsType = RemoveProps<Book, OptionalFields>;
+
+export type Unpromisify<T> = T extends Promise<infer R> ? R : never;
+
+type FN = Unpromisify<ReturnType<typeof getBooksByCategoryPromise>>;

@@ -1,16 +1,13 @@
-import { ReferenceItem, UL, RefBook, Shelf } from './classes';
-import { Librarian, Logger, A, Book, Magazine } from './interfaces';
-import { createCustomer, getAllBooks, getObjectProperty, printRefBook, purge } from './functions';
-import type { Library } from './classes/library';
+import { getBookByCategory, getBooksByCategoryPromise, logCategorySearch, logSearchResult } from './functions';
 import { Category } from './enums';
-import { BookRequiredFields, CreateCustomerFunctionType, UpdatedBook } from './types';
+import { Unpromisify } from './types';
 
-showHello('greeting', 'TypeScript');
-
-function showHello(divName: string, name: string) {
-    const elt = document.getElementById(divName);
-    elt.innerText = `Hello from ${name}`;
-}
+// showHello('greeting', 'TypeScript');
+//
+// function showHello(divName: string, name: string) {
+//     const elt = document.getElementById(divName);
+//     elt.innerText = `Hello from ${name}`;
+// }
 
 // Task 02.01
 // logFirstAvailable(getAllBooks());
@@ -255,12 +252,38 @@ function showHello(divName: string, name: string) {
 // refBook.printItem();
 
 // Task 08.05, 08.06
-const u = new UL.UniversityLibrarian();
-u.name = 'Anna';
-u.assistCustomer('Boris', getAllBooks()[0].title);
-console.log(u);
+// const u = new UL.UniversityLibrarian();
+// u.name = 'Anna';
+// u.assistCustomer('Boris', getAllBooks()[0].title);
+// console.log(u);
 
 // Task 08.07
-const refBook = new RefBook(1, 'Typescript', 2022, 2);
-refBook.copies = 10;
-console.log(refBook);
+// const refBook = new RefBook(1, 'Typescript', 2022, 2);
+// refBook.copies = 10;
+// console.log(refBook);
+
+// Task 09.01
+console.log('Begin');
+getBookByCategory(Category.JavaScript, logCategorySearch);
+getBookByCategory(Category.Software, logCategorySearch);
+console.log('End');
+
+// Task 09.02
+console.log('Begin');
+getBooksByCategoryPromise(Category.JavaScript)
+    .then((titles: Unpromisify<ReturnType<typeof getBooksByCategoryPromise>>) => {
+        console.log(titles);
+        return Promise.resolve(titles.length);
+    })
+    .then(n => console.log(`n: ${n}`))
+    .catch(err => console.log(err));
+getBooksByCategoryPromise(Category.Software)
+    .then(titles => console.log(titles))
+    .catch(err => console.log(err));
+console.log('End');
+
+// Task 09.03
+console.log('Begin');
+logSearchResult(Category.JavaScript);
+logSearchResult(Category.Software).catch(err => console.log(err));
+console.log('End');
